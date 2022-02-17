@@ -2,11 +2,11 @@
 pipeline {
     
     environment {
-    imagename = "becomedevops/petclinic"
-    registryCredential = 'Dockerhubcreds'
+    imagename = "venkat78786/jaffer"
+    registryCredential = 'Dockerjaffer'
     dockerImage = ''
   }
-    agent {label 'worker1'}
+    agent any
 
     stages {
         
@@ -15,7 +15,7 @@ pipeline {
         stage('git') {
             steps {
                 echo 'clonning Repository'
-                git branch: 'main', url: 'https://github.com/mnagen/spring-petclinic.git'
+                git branch: 'main', url: 'https://github.com/venkytatapudi/spring-petclinic.git-jenkins-file.git'
                 
                 echo 'Repo clone successfully'
             }
@@ -33,9 +33,9 @@ pipeline {
             
             
             
-            stage('DEPLOY') {
+            stage('build docker image') {
             steps {
-                echo 'Deploy the code'
+                echo 'build docker image'
                 
                 script {
                     
