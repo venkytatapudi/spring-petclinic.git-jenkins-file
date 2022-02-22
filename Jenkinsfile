@@ -3,7 +3,7 @@ pipeline {
     
     environment {
     imagename = "venkat78786/zilla-pipeline"
-    registryCredential = 'Dockerjaffer'
+    registryCredential = 'zillapipeline'
     dockerImage = ''
   }
     agent any
