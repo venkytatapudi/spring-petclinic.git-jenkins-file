@@ -4,7 +4,7 @@ pipeline {
     environment {
     imagename = "venkat78786/zilla-pipeline"
     registryCredential = 'zillapipeline'
-    dockerImage = ''
+    dockerImage = 'centos'
   }
     agent any
 
