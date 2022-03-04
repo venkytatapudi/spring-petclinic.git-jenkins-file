@@ -2,7 +2,7 @@
 pipeline {
     
     environment {
-    imagename = "venkat78786/new pipeline"
+    imagename = "venkat787866/new pipeline"
     registryCredential = 'jaffercredentials'
     dockerImage = 'centos'
   }
