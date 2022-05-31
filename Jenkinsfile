@@ -2,10 +2,10 @@
 pipeline {
     agent any
     environment {
-        registry = 
+        registry = 284257319655.dkr.ecr.us-east-1.amazonaws.com/subbu-ecr-1
     }
    
-    stages {284257319655.dkr.ecr.us-east-1.amazonaws.com/subbu-ecr-1
+    stages {
         stage('Cloning Git') {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/akannan1087/myPythonDockerRepo']]])     
