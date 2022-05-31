@@ -1,91 +1,53 @@
 
 pipeline {
-    
-    environment {
-    imagename = "venkat787866/newpipeline"
-    registryCredential = 'jaffercredentials'
-    dockerImage = 'centos'
-  }
     agent any
-
-    stages {
-        
-        
-        
-        stage('git') {
-            steps {
-                echo 'clonning Repository'
-                git branch: 'main', url: 'https://github.com/venkytatapudi/spring-petclinic.git-jenkins-file.git'
-                
-                echo 'Repo clone successfully'
-            }
-            
-        }
-        
-        
-       stage('BUILD') {
-            steps {
-                echo 'Build the code'
-                sh './mvnw package'
-            }
-       }
-            
-            
-            
-            
-            stage('build docker image') {
-            steps {
-                echo 'build docker image'
-                
-                script {
-                    
-                     dockerImage = docker.build imagename 
-                    
-                }
-                  
-                
-            } 
-                
-            }  
-            
-            
-            stage('push') {
-            steps {
-                echo 'push image'
-                script{
-                    
-                 docker.withRegistry( '', registryCredential ) {
-                  dockerImage.push("$BUILD_NUMBER")
-                  dockerImage.push('latest')
-                 }}
-
-          }
-                
-                
-                
-                
-            }
-        
-        
-        
-        
-        
-        stage('Remove Unused docker image') {
-steps{
-sh "docker rmi $imagename:$BUILD_NUMBER"
-sh "docker rmi $imagename:latest"
-    
-    
-}}
-        } 
-        
-        
-        
-        
-        
-        
-        
+    environment {
+        registry = 
     }
-    
-    
+   
+    stages {284257319655.dkr.ecr.us-east-1.amazonaws.com/subbu-ecr-1
+        stage('Cloning Git') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/akannan1087/myPythonDockerRepo']]])     
+            }
+        }
+  
+    // Building Docker images
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry
+        }
+      }
+    }
+   
+    // Uploading Docker images into AWS ECR
+
+ 
+    stage('Pushing to ECR') {
+     steps{  
+         script {
+                sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 284257319655 .dkr.ecr.us-east-1.amazonaws.com'
+                sh 'docker push 284257319655.dkr.ecr.us-east-2.amazonaws.com/subbu-ecr-1:latest'
+         }
+        }
+      }
+   
+         // Stopping Docker containers for cleaner Docker run
+     stage('stop previous containers') {
+         steps {
+            sh 'docker ps -f name=mypythonContainer -q | xargs --no-run-if-empty docker container stop'
+            sh 'docker container ls -a -fname=mypythonContainer -q | xargs -r docker container rm'
+         }
+       }
+      
+    stage('Docker Run') {
+     steps{
+         script {
+                sh 'docker run -d -p 8096:5000 --rm --name mypythonContainer 284257319655.dkr.ecr.us-east-1.amazonaws.com/subbu-ecr-1:latest'
+            }
+      }
+    }
+    }
+}
 
