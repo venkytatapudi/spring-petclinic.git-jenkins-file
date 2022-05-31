@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Cloning Git') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/akannan1087/myPythonDockerRepo']]])     
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/akannan1087/myPythonDockerRepo']]])     
             }
         }
   
@@ -28,7 +28,7 @@ pipeline {
      steps{  
          script {
                 sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 284257319655 .dkr.ecr.us-east-1.amazonaws.com'
-                sh 'docker push 284257319655.dkr.ecr.us-east-2.amazonaws.com/subbu-ecr-1:latest'
+                sh 'docker push 284257319655.dkr.ecr.us-east-1.amazonaws.com/subbu-ecr-1:latest'
          }
         }
       }
