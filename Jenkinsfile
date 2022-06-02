@@ -2,7 +2,7 @@
 pipeline {
     agent any
     environment {
-        registry = 284257319655.dkr.ecr.us-east-1.amazonaws.com/subbu-ecr-1
+        registry = 284257319655.dkr.ecr.us-east-1.amazonaws.com/my-ecr-venky
     }
    
     stages {
@@ -27,8 +27,8 @@ pipeline {
     stage('Pushing to ECR') {
      steps{  
          script {
-                sh 'aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 284257319655 .dkr.ecr.us-east-2.amazonaws.com'
-                sh 'docker push 284257319655.dkr.ecr.us-east-2.amazonaws.com/subbu-ecr-1:latest'
+                sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 284257319655.dkr.ecr.us-east-1.amazonaws.com'
+                sh 'docker push 284257319655.dkr.ecr.us-east-1.amazonaws.com/my-ecr-venky:latest'
          }
         }
       }
@@ -44,7 +44,7 @@ pipeline {
     stage('Docker Run') {
      steps{
          script {
-                sh 'docker run -d -p 8096:5000 --rm --name mypythonContainer 284257319655.dkr.ecr.us-east-2.amazonaws.com/subbu-ecr-1:latest'
+                sh 'docker run -d -p 8096:5000 --rm --name mypythonContainer 284257319655.dkr.ecr.us-east-.amazonaws.com/my-ecr-venky:latest'
             }
       }
     }
