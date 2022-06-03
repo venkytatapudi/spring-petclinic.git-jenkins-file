@@ -11,8 +11,6 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/venkytatapudi/spring-petclinic.git-jenkins-file.git']]])     
             }
         }
-  
-    // Building Docker images
     stage('Building image') {
       steps{
         script {
@@ -20,10 +18,12 @@ pipeline {
         }
       }
     }
-   
-    // Uploading Docker images into AWS ECR
-
- 
+        stage('BUILD') {
+            steps {
+                echo 'Build the code'
+                sh './mvnw package'
+            }
+       }
     stage('Pushing to ECR') {
      steps{  
          script {
